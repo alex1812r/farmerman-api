@@ -10,10 +10,8 @@ module.exports.getPlants = async (req, res) => {
         }
     };
 
-    if(x) Object.assign(query, { x });
-    if(y) Object.assign(query, { y });
-
-    console.log('query', query);
+    if(x) Object.assign(query, { 'land.x': parseInt(x) });
+    if(y) Object.assign(query, { 'land.y': parseInt(y) });
 
 	try {
 		const plants = await Plant.find(query).sort({ resetTime: 1 });
