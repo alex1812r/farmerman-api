@@ -10,11 +10,12 @@ module.exports.getPlants = async (req, res) => {
         }
     };
 
+
     if(x) Object.assign(query, { 'land.x': parseInt(x) });
     if(y) Object.assign(query, { 'land.y': parseInt(y) });
 
 	try {
-		const plants = await Plant.find(query).sort({ resetTime: 1 });
+        const plants = await Plant.find(query).sort({ resetTime: 1 });
 		res.status(200).json({ plants });
 	} catch(err) {
 		res.status(200).send('error al obtener plantas');
@@ -23,8 +24,10 @@ module.exports.getPlants = async (req, res) => {
 }
 
 module.exports.createPlantMany = async (req, res) => {
+    const data = req.body.plants;
     try {
-        const plants = await Plant.create(req.body.plants, { upsert : true });
+        await Plant.deleteMany({ _id: { $in: data.map((item) => item._id ) }})
+        const plants = await Plant.create(data, { upsert : true });
         res.status(201).json({ plants });
     } catch(err) {
         console.log(err);

@@ -66,7 +66,7 @@ const PlantItemSchema = new mongoose.Schema({
 	},
 });
 
-PlantItemSchema.pre('save', function(next) {
+PlantItemSchema.pre('save', async function(next) {
     const startTime = moment(this.startTime).utc().format('HH:mm:ss');
     this.resetTime = parseInt(startTime.split(':').join(''));
     next()
