@@ -61,11 +61,9 @@ const PlantItemSchema = new mongoose.Schema({
 	},
 	plantUnitId: {
 		type: Number,
-		required: true
 	},
 	plantElement: {
 		type: String,
-		required: true
 	},
 	land: {
 		type: LandSchema,
