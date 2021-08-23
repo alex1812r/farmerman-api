@@ -36,7 +36,7 @@ module.exports.getPlants = async (req, res) => {
     if(y) Object.assign(query, { 'land.y': parseInt(y) });
 
 	try {
-        const plants = await Plant.find(query).sort({ resetEndTime: 1, resetStartTime: 1 });
+        const plants = await Plant.find(query).sort({ resetEndTime: 1 });
 		res.status(200).json({ plants });
 	} catch(err) {
 		res.status(200).send('error al obtener plantas');
