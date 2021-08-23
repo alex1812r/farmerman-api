@@ -4,10 +4,31 @@ module.exports.getPlants = async (req, res) => {
     const { from, to, x, y } = req.query;
 
     const query = {
-        resetTime: {
-            $gte: parseInt(from),
-            $lte: parseInt(to)
-        }
+        $or: [
+            {
+                $and: [
+                    {
+                        resetStartTime: {
+                            $gte: parseInt(from),
+                            $lte: parseInt(to)
+                        }
+                    },
+                    {
+                        resetEndTime: {
+                            $gte: parseInt(from),
+                            $lte: parseInt(to)
+                        }
+                    }
+                ],
+            },
+            {
+                resetEndTime: {
+                    $gte: parseInt(from),
+                    $lte: parseInt(to)
+                }
+            }
+        ]
+        
     };
 
 
@@ -15,7 +36,7 @@ module.exports.getPlants = async (req, res) => {
     if(y) Object.assign(query, { 'land.y': parseInt(y) });
 
 	try {
-        const plants = await Plant.find(query).sort({ resetTime: 1 });
+        const plants = await Plant.find(query).sort({ resetEndTime: 1, resetStartTime: 1 });
 		res.status(200).json({ plants });
 	} catch(err) {
 		res.status(200).send('error al obtener plantas');
